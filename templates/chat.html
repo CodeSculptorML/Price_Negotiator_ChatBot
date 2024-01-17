@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Chatbot App</h1>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="chat-container">
+                            <div class="chat-message user-message">
+                                <strong>You:</strong> {{ user_input }}
+                            </div>
+                            <div class="chat-message bot-message">
+                                <strong>Chatbot:</strong> {{ bot_response }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form action="/chat" method="POST">
+                    <div class="form-group mt-3">
+                        <label for="userInput">You:</label>
+                        <input type="text" class="form-control" id="userInput" name="user_input" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
