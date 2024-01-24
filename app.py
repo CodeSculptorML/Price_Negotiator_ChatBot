@@ -100,5 +100,10 @@ def chat():
 
     return render_template("chat.html", user_input=user_input, bot_response=bot_response)
 
+@app.route("/cart")
+def cart():
+    return render_template("cart.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
