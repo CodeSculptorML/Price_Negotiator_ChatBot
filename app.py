@@ -85,6 +85,12 @@ extended_price_negotiation_pairs = [
 ]
 
 extended_price_negotiation_chatbot = Chat(extended_price_negotiation_pairs, reflections)
+def chatbot_response(user_input):
+    response = extended_price_negotiation_chatbot.respond(user_input)
+    if response:
+        return response
+    else:
+        return "I'm sorry, I didn't understand that. Could you please ask me something else?"
 
 # Flask routes
 @app.route("/")
@@ -96,8 +102,8 @@ def chat():
     user_input = request.form.get("user_input")
     
     # Your chatbot logic goes here
-    bot_response = extended_price_negotiation_chatbot.respond(user_input)
-
+    #bot_response = extended_price_negotiation_chatbot.respond(user_input)
+    bot_response=chatbot_response(user_input)
     return render_template("chat.html", user_input=user_input, bot_response=bot_response)
 
 @app.route("/cart")
