@@ -3,35 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot App</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #chat-box {
+            margin-bottom: 20px;
+            overflow-y: auto;
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .user-message {
+            background-color: #d3e0ff;
+            text-align: right;
+        }
+
+        .bot-message {
+            background-color: #f0f0f0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">Chatbot App</h1>
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="chat-container">
-                            <div class="chat-message user-message">
-                                <strong>You:</strong> {{ user_input }}
-                            </div>
-                            <div class="chat-message bot-message">
-                                <strong>Chatbot:</strong> {{ bot_response }}
-                            </div>
-                        </div>
-                    </div>
+    <div class="container">
+        <div id="chat-box">
+            <div id="chat-container">
+                <div class="user-message">
+                    <p>{{ user_input }}</p>
                 </div>
-                <form action="/chat" method="POST">
-                    <div class="form-group mt-3">
-                        <label for="userInput">You:</label>
-                        <input type="text" class="form-control" id="userInput" name="user_input" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send</button>
-                </form>
+                <div class="bot-message">
+                    <!--<p>{{ bot_response }}</p>-->
+                    <p>{{ bot_response | safe }}</p>
+                </div>
             </div>
         </div>
+        <form action="/chat" method="POST" id="chat-form">
+            <div class="form-group mt-3">
+                <label for="userInput">You:</label>
+                <input type="text" class="form-control" id="userInput" name="user_input" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+        <div id="button-container">
+            <!-- Add buttons for user interaction -->
+            <button type="button" onclick="sendMessage('Show Products')">Show Products</button>
+            <button type="button" onclick="sendMessage('Negotiate')">Negotiate</button>
+            <button type="button" onclick="sendMessage('Do not negotiate')">Do not negotiate</button>
+            <button type="button" onclick="sendMessage('Finalize Deal')">Finalize Deal</button>
+            <button type="button" onclick="sendMessage('Customer Care')">Customer Care</button>       
+    
+        </div>
+        
     </div>
+    
+    
+    <script>
+
+        function sendMessage(message) {
+            var chatBox = document.getElementById("chat-box");
+            var userMessage = document.createElement("div");
+            userMessage.classList.add("message", "user-message");
+            userMessage.textContent = message;
+            chatBox.appendChild(userMessage);
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'user_input=' + encodeURIComponent(message),
+            })
+            .then(response => response.text())
+            .then(data => {
+                var botMessage = document.createElement("div");
+                botMessage.classList.add("message", "bot-message");
+                botMessage.innerHTML = data;
+                chatBox.appendChild(botMessage);
+                // Scroll to bottom of chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
+                // Check if there are options to display
+                if (data.includes("See anything you like? Just ask it.")) {
+                    displayOptions();
+                }
+            });
+        }
+    
+        // Function to update chat box with user and bot messages
+        function updateChatBox(userInput, botResponse) {
+            var chatBox = document.getElementById("chat-box");
+            var userMessage = document.createElement("div");
+            userMessage.classList.add("message", "user-message");
+            userMessage.textContent = "You: " + userInput;
+            chatBox.appendChild(userMessage);
+    
+            var botMessage = document.createElement("div");
+            botMessage.classList.add("message", "bot-message");
+            botMessage.textContent = "Bot: " + botResponse;
+            chatBox.appendChild(botMessage);
+    
+            // Scroll to bottom of chat box
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    
+        // Handle form submission and button clicks
+        function handleUserInput(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+    
+            var userInput = document.getElementById("userInput").value;
+            sendMessage(userInput); // Send user input message
+    
+            document.getElementById("userInput").value = ""; // Clear input field
+        }
+        // Function to handle button clicks
+    function handleButtonClick(message) {
+        sendMessage(message); // Send button message
+    }
+    
+        // Submit form data via AJAX when user sends a message
+        //document.getElementById("chat-form").addEventListener("submit", handleUserInput);
+        document.getElementById("chat-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            var userInput = document.getElementById("userInput").value;
+            sendMessage(userInput);
+            document.getElementById("userInput").value = ""; // Clear input field
+        });
+    </script>
+    
+    
 </body>
 </html>

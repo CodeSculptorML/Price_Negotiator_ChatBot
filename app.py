@@ -8,13 +8,17 @@ from nltk.chat.util import Chat, reflections
 
 extended_price_negotiation_pairs = [
     ["hi|hello|hey", ["Hello!Welcome to Price Negotiation Chatbot"]],
-    ["show products", ["We have 1.Bikes\n2.accessories\n3.fashion"]],
-    ["show available products", ["We have 1.Bikes\n2.accessories\n3.fashion"]],
-    ["available products", ["We have 1.Bikes\n2.accessories\n3.fashion"]],
-    ["products", ["We have 1.Bikes\n2.accessories\n3.fashion"]],
-    ["Bikes", ["We have touring bikes, road bikes, mountain bikes. See anything you like? Just ask it."]],
-    ["accessories", ["We have mobile phones, laptops, washing machine. See anything you like? Just ask it."]],
-    ["fashion", ["We have kids fashion, womens fashion, mens fashion. See anything you like? Just ask it."]],
+    ["show products", ["We have <br>1.Bikes<br>2.accessories<br>3.fashion<br>4.Watches"]],
+    ["show available products", ["We have <br>1.Bikes<br>2.accessories<br>3.fashion<br>4.Watches"]],
+    ["available products", ["We have <br>1.Bikes<br>2.accessories<br>3.fashion<br>4.Watches"]],
+    ["products", ["We have <br>1.Bikes<br>2.accessories<br>3.fashion<br>4.Watches"]],
+    ["Bikes", ["We have <ul><li>touring bikes</li><li>road bikes</li><li> mountain bikes</li></ul>\nSee anything you like? Just ask it."]],
+    ["Accessories", ["We have mobile phones, laptops, washing machine. See anything you like? Just ask it."]],
+    ["Fashion", ["We have kids fashion, womens fashion, mens fashion. See anything you like? Just ask it."]],
+    ["Watches", ["We have smart watch,analog watch. See anything you like? Just ask it."]],
+
+    ["smart watch", ["OK, check the link of the product https://www.flipkart.com/wearable-smart-devices/smart-watches/pr?sid=ajy,buh"]],
+    ["analog watch", ["OK, check the link of the product https://www.fastrack.in/shop/analog-watches"]],
 
     ["touring bikes", ["What do you prefer? We have KTM 390 duke, Royal Enfield Himalayan."]],
     ["ktm 390 duke", ["OK, check the link of the product https://www.zigwheels.com/ktm-bikes/duke-390"]],
@@ -36,7 +40,6 @@ extended_price_negotiation_pairs = [
     ["LG", ["OK, check the link of the product https://www.lg.com/in/refrigerators"]],
     ["Samsung", ["OK, check the link of the product https://www.samsung.com/in/refrigerators/all-refrigerators/"]],
 
-
     ["kids fashion", ["What do you prefer? We have T-Shirts, Jeans"]],
     ["T-Shirts", ["OK, check the link of the product https://www.myntra.com/kids-tshirts"]],
     ["Jeans", ["OK, check the link of the product https://www.myntra.com/kids-jeans"]],
@@ -47,7 +50,11 @@ extended_price_negotiation_pairs = [
     ["Shirt", ["OK, check the link of the product https://www.ajio.com/men-shirts/c/830216013"]],
     ["Jeans", ["OK, check the link of the product https://www.myntra.com/men-jeans"]],
 
-    ["negotiate", ["Do you wish to negotiate?"]],
+    ["Negotiate", ["okay..let's begin negotiation.<br>I can Offer 10-20 percent discount.<br>How much discount do you want?<br>1.18 percent<br>2.16 percent<br>3.15 percent<br>4.14 percent.<br>Choose any discount percent from above"]],
+    ["Do not negotiate", ["That's fine You can buy the product of your choice at current price"]],
+    ["Finalize Deal", ["Hurrah the Deal is finalized at entered percentage amount .Congratulations"]],
+    ["Customer Care", ["You can connect with custoner care on the following contact number +91-8378934521 or else you can drop a mail at custonercare12@gmail.com"]],
+    
     #["do you wish to negotiate the discount percentage", ["Yes", "No"]],
     ["price", ["Please check the price on website link."]],
     ["yes", ["Ok Great lets Begin then"]],
@@ -105,7 +112,6 @@ def chat():
 @app.route("/cart")
 def cart():
     return render_template("cart.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
